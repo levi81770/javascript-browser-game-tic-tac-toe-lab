@@ -46,12 +46,12 @@ function updateBoard() {
 }
 
 const updateMessage = () => {
-    if (!winner && !tie) {
-        messageEl.textContent = `it's ${turn} turn`
-    } else if (!winner && tie) {
-        messageEl.textContent = `it's a tie!`
+    if (winner) {
+        messageEl.textContent = `${winner} wins! congratulations! 🥳`
+    } else if (tie) {
+        messageEl.textContent = `it's a tie! 🤝`
     } else {
-        messageEl.textContent = `${turn} win, congratulation!`
+        messageEl.textContent = `it's ${turn}'s turn 🎯`
     }
 }
 
@@ -76,35 +76,25 @@ function placePiece(index) {
 }
 
 function checkForWinner() {
-    winningCombos.forEach((element) => {
-        if (board[element[0]] !== '' && board[element[0]] === board[element[1]] && board[element[1]] === board[element[2]]) {
-            winner = true            
+    for (const combo of winningCombos) {
+        if (board[combo[0]] !== '' && board[combo[0]] === board[combo[1]] && board[combo[1]] === board[combo[2]]) {
+            winner = board[combo[0]];
+            return;
         }
-    })
+    }
 }
 
 function checkForTie() {
-    if (winner) {
-        return
-    }
+    if (winner) return;
+    
     if (!board.includes('')) {
         tie = true
-        console.log(tie);
     }
 }
 
 function switchPlayerTurn() {
-    if (winner) {
-        return
-    } else {
-        if (turn === 'X') {
-            turn = 'O'
-        } else {
-            turn = 'X'
-        }
-        console.log(turn);
-        
-    }
+    if (winner) return;
+    turn = turn === 'X' ? 'O' : 'X'
 }
 
 const init = () => {
